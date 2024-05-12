@@ -128,12 +128,12 @@ export default function MovieModal() {
 				setTimeout(() => {
 					toast('✅ Add movie successful')
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
 					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}
 			console.log(movieState);
 		} catch (error) {
@@ -149,7 +149,7 @@ export default function MovieModal() {
 				setTimeout(() => {
 					toast('✅ Edit movie successful')
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

@@ -50,12 +50,12 @@ export default function ActorModal() {
 				setTimeout(() => {
 					toast('✅ Add actor successful')
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
 					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -69,7 +69,7 @@ export default function ActorModal() {
 				setTimeout(() => {
 					toast('✅ Edit actor successful')
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
