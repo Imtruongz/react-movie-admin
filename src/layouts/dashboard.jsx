@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/NavBar";
 import Sidebar from "../components/SideBar";
 import NavPage from "../components/NavPage";
+import { ToastContainer } from "react-toastify";
 
 const Dashboard = () => {
   return (
@@ -11,6 +12,7 @@ const Dashboard = () => {
           <Navbar />
           <div className=" bg-bgColorBlock rounded-lg h-[calc(100vh-136px)]">
             <NavPage />
+            {/* <ToastContainer position="bottom-left" pauseOnHover={true} stacked={true} pauseOnFocusLoss={false}/> */}
           </div>
         </div>
       </div>

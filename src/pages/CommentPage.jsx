@@ -174,13 +174,6 @@ export default function CommentPage() {
                 </tbody>
               </table>
             </CardBody>
-            {/* {commentModal && (
-              <commentModal
-                togglecommentModal={togglecommentModal}
-                title={clickAdd ? "Add" : "Edit"}
-                commentID={comment}
-              />
-            )} */}
           </div>
           <PaginationFooter
             currentPage={currentPage}

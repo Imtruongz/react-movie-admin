@@ -22,11 +22,21 @@ import { movieFields } from '../constants/FormFields';
 import { getAllCountries } from '../services/movieService';
 
 import { getAllDirectors } from '../services/directorService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const filterOption = (input, option) =>
 	(option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-export default function MovieModal({ toggleMovieModal, movieID, title }) {
+export default function MovieModal() {
+	const navigate = useNavigate();
+	const { id } = useParams();
+	let movieID = '';
+	if (id) {
+		movieID = id.split(':').filter((el) => el !== '');
+	}
+
+	const [title, setTitle] = useState('Edit');
 	const [movieState, setMovieState] = useState({});
 	const [previewImgURL, setPreviewImageURL] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -116,7 +126,13 @@ export default function MovieModal({ toggleMovieModal, movieID, title }) {
 			let message = await createNewMovieApi(movieState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
-					toggleMovieModal(false);
+					toast('✅ Add movie successful')
+					navigate('/dashboard/Movies')
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
+					navigate('/dashboard/Movies')
 				}, 3000);
 			}
 			console.log(movieState);
@@ -131,7 +147,8 @@ export default function MovieModal({ toggleMovieModal, movieID, title }) {
 			console.log(movieState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
-					toggleMovieModal(false);
+					toast('✅ Edit movie successful')
+					navigate('/dashboard/Movies')
 				}, 3000);
 			}
 		} catch (error) {
@@ -147,8 +164,10 @@ export default function MovieModal({ toggleMovieModal, movieID, title }) {
 		getDirector();
 		if (movieID) {
 			getMovie();
+		} else {
+			setTitle('Add')
 		}
-	}, [movieID]);
+	}, []);
 
 	const handleChangeCountry = (value) => {
 		setSelectedCountry(value);
@@ -226,7 +245,7 @@ export default function MovieModal({ toggleMovieModal, movieID, title }) {
 	return (
 		<div className="fixed inset-0 z-10">
 			<div
-				onClick={toggleMovieModal}
+				onClick={() => navigate('/dashboard/Movies')}
 				className="w-full h-full bg-black opacity-50"></div>
 			<div className="absolute w-7/12 h-[90%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded">
 				<div className="p-4 flex justify-center flex-col items-center mt-[3%]">
@@ -412,7 +431,7 @@ export default function MovieModal({ toggleMovieModal, movieID, title }) {
 								variant="outlined"
 								color="red"
 								className="ml-4"
-								onClick={toggleMovieModal}>
+								onClick={() => navigate('/dashboard/Movies')}>
 								Cancel
 							</Button>
 						</div>

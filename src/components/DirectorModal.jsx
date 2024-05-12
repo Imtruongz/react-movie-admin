@@ -1,17 +1,36 @@
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import Input from './Input';
 import { actorFields } from '../constants/FormFields';
 import { DatePicker, Image } from 'antd';
 import dayjs from 'dayjs';
 import commonUtils from '../utils/commonUtils';
-import { createNewDirectorApi, editDirectorApi, getAllDirectors } from '../services/directorService';
+import {
+	createNewDirectorApi,
+	editDirectorApi,
+	getAllDirectors,
+} from '../services/directorService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
+export default function DirectorModal() {
+	const navigate = useNavigate();
+	const { id } = useParams();
+	let directorID = '';
+	if (id) {
+		directorID = id.split(':').filter((el) => el !== '');
+	}
 
-export default function DirectorModal({ toggleDirectorModal, directorID, title }) {
+	// * Title
+	const [title, setTitle] = useState('Edit');
+
+	// * Field State
 	const [directorState, setDirectorState] = useState({});
 	const [birthdate, setBirthDate] = useState(null);
 	const [previewImgURL, setPreviewImageURL] = useState(null);
+
+	// * Spinner
+	const [click, setClick] = useState(false);
 
 	const getDirector = async () => {
 		try {
@@ -29,10 +48,17 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 	const addDirector = async () => {
 		try {
 			let message = await createNewDirectorApi(directorState);
-			if(message.errCode === 0){
-				toggleDirectorModal(false)
+			if (message.errCode === 0) {
+				setTimeout(() => {
+					toast('✅ Add actor successful')
+					navigate('/dashboard/Directors');
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
+					navigate('/dashboard/Directors');
+				}, 3000);
 			}
-
 		} catch (error) {
 			console.log(error);
 		}
@@ -40,9 +66,12 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 
 	const editDirector = async () => {
 		try {
-			let message =await editDirectorApi(directorState);
-			if(message.errCode === 0){
-				toggleDirectorModal(false)
+			let message = await editDirectorApi(directorState);
+			if (message.errCode === 0) {
+				setTimeout(() => {
+					toast('✅ Edit actor successful')
+					navigate('/dashboard/Directors');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -52,8 +81,10 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 	useEffect(() => {
 		if (directorID) {
 			getDirector();
+		} else {
+			setTitle('Add');
 		}
-	}, [directorID]);
+	}, []);
 
 	const handleChange = (e) => {
 		const { id, value } = e.target;
@@ -89,7 +120,7 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 
 	const fetchImageAsBase64 = async (imageUrl) => {
 		try {
-			await setPreviewImageURL(imageUrl)
+			await setPreviewImageURL(imageUrl);
 		} catch (error) {
 			console.error('Error fetching image:', error);
 			return null;
@@ -102,13 +133,14 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 	};
 
 	const handleSubmitDirector = () => {
+		setClick(true);
 		title === 'Add' ? addDirector() : editDirector();
 	};
 
 	return (
 		<div className="fixed inset-0 z-10">
 			<div
-				onClick={toggleDirectorModal}
+				onClick={() => navigate('/dashboard/Directors')}
 				className="w-full h-full bg-black opacity-50"></div>
 			<div className="absolute w-7/12 h-5/6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded">
 				<div className="p-4 flex justify-center flex-col items-center mt-[3%]">
@@ -132,6 +164,7 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 									required={ele.isRequired}
 									disable={ele.disable}
 									value={directorState[ele.id]}
+									classExpand={ele.classExpand}
 								/>
 							))}
 						</div>
@@ -150,6 +183,7 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 										required={ele.isRequired}
 										disable={ele.disable}
 										value={directorState[ele.id]}
+										classExpand={ele.classExpand}
 									/>
 								))}
 							</div>
@@ -213,20 +247,31 @@ export default function DirectorModal({ toggleDirectorModal, directorID, title }
 							</div>
 						</div>
 
-						<Button
-							variant="solid"
-							color="blue"
-							className="w-24"
-							onClick={handleSubmitDirector}>
-							Save
-						</Button>
-						<Button
-							variant="outlined"
-							color="red"
-							className="ml-4"
-							onClick={toggleDirectorModal}>
-							Cancel
-						</Button>
+						<div className="flex">
+							<div>
+								{click ? (
+									<div className="w-24 bg-blue-500 flex justify-center py-2 rounded-md">
+										<Spinner className="h-6 w-6" color="" />
+									</div>
+								) : (
+									<Button
+										variant="solid"
+										color="blue"
+										className="w-24"
+										onClick={handleSubmitDirector}>
+										Save
+									</Button>
+								)}
+							</div>
+
+							<Button
+								variant="outlined"
+								color="red"
+								className="ml-4"
+								onClick={() => navigate('/dashboard/Directors')}>
+								Cancel
+							</Button>
+						</div>
 					</form>
 				</div>
 			</div>

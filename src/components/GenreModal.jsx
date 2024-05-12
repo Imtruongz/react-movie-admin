@@ -2,17 +2,29 @@ import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import {
 	getAllGenres,
-	handleCreateNewGenre,
+	handleCreateNewGenreApi,
 	handleUpdateGenreDataApi,
 } from '../services/genreService';
 import Input from './Input';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-export default function GenreModal({ toggleGenreModal, title, genreID }) {
+export default function GenreModal() {
 	const [genreState, setGenreState] = useState({});
 	const [value, setValue] = useState('');
 	const [click, setClick] = useState(false);
 
-	const getGenre = async () => {
+	const navigate = useNavigate();
+	const { id } = useParams();
+	let genreID = '';
+	if (id) {
+		genreID = id.split(':').filter((el) => el !== '');
+	}
+
+
+	const [title, setTitle] = useState('Edit');
+
+	const getGenre = async (genreID) => {
 		try {
 			let response = await getAllGenres(genreID);
 			setGenreState(response.genres);
@@ -23,7 +35,10 @@ export default function GenreModal({ toggleGenreModal, title, genreID }) {
 	};
 
 	useEffect(() => {
-		getGenre();
+		if (!genreID) {
+			setTitle('Add');
+		}
+		getGenre(genreID);
 	}, []);
 
 	const handleChange = (e) => {
@@ -43,11 +58,17 @@ export default function GenreModal({ toggleGenreModal, title, genreID }) {
 
 	const handleAddGenre = async () => {
 		try {
-			let message = await handleCreateNewGenre(value);
+			let message = await handleCreateNewGenreApi(value);
 			if (message.errCode === 0) {
+				notify();
 				setTimeout(() => {
-					toggleGenreModal(false);
-				}, 3000); // Chờ 3 giây trước khi đóng modal
+					navigate('/dashboard/Categories');
+				}, 3000);
+			}else{
+				toast(`❌ ${message.ereMessage}`)
+				setTimeout(() => {
+					navigate('/dashboard/Categories');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -58,19 +79,22 @@ export default function GenreModal({ toggleGenreModal, title, genreID }) {
 		try {
 			let message = await handleUpdateGenreDataApi(genreID, value);
 			if (message.errCode === 0) {
+				notify();
 				setTimeout(() => {
-					toggleGenreModal(false);
-				}, 3000); // Chờ 3 giây trước khi đóng modal
+					navigate('/dashboard/Categories');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	const notify = () => toast(`✅ ${title} genre successful!`);
+
 	return (
 		<div className="fixed inset-0 z-10">
 			<div
-				onClick={toggleGenreModal}
+				onClick={() => navigate('/dashboard/Categories')}
 				className="w-full h-full bg-black opacity-50"></div>
 			<div className="absolute w-7/12 h-5/6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded">
 				<div className="p-4 flex justify-center flex-col items-center mt-[5%]">
@@ -115,7 +139,7 @@ export default function GenreModal({ toggleGenreModal, title, genreID }) {
 								variant="outlined"
 								color="red"
 								className="ml-4"
-								onClick={toggleGenreModal}>
+								onClick={() => navigate('/dashboard/Categories')}>
 								Cancel
 							</Button>
 						</div>

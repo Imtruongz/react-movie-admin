@@ -6,7 +6,7 @@ const getAllGenres = (id)=>{
     })
 }
 
-const handleCreateNewGenre = (genreData)=>{
+const handleCreateNewGenreApi = (genreData)=>{
     return axios.post('/api/create-new-genre',{
         name: genreData
     })
@@ -36,7 +36,7 @@ const searchGenreApi = (keyword)=>{
 
 export {
     getAllGenres,
-    handleCreateNewGenre,
+    handleCreateNewGenreApi,
     handleUpdateGenreDataApi,
     deleteGenreApi,
     searchGenreApi

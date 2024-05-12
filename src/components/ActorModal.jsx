@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import Input from './Input';
 import { actorFields } from '../constants/FormFields';
@@ -10,11 +10,25 @@ import {
 } from '../services/actorService';
 import dayjs from 'dayjs';
 import commonUtils from '../utils/commonUtils';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-export default function ActorModal({ toggleActorModal, actorID, title }) {
+export default function ActorModal() {
+	const navigate = useNavigate();
+	const { id } = useParams();
+	let actorID = '';
+	if (id) {
+		actorID = id.split(':').filter((el) => el !== '');
+	}
+
+	const [title, setTitle] = useState('Edit');
+
 	const [actorState, setActorState] = useState({});
 	const [birthdate, setBirthDate] = useState(null);
 	const [previewImgURL, setPreviewImageURL] = useState(null);
+
+	// * Spinner
+	const [click, setClick] = useState(false);
 
 	const getActor = async () => {
 		try {
@@ -23,7 +37,6 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 				setActorState(response.actors);
 				setBirthDate(dayjs(response.actors.birthdate, 'YYYY-MM-DD'));
 				fetchImageAsBase64(response.actors.image);
-				console.log(response.actors.image);
 			}
 		} catch (error) {
 			console.error('Lỗi khi gọi API:', error);
@@ -34,7 +47,15 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 		try {
 			let message = await createNewActorApi(actorState);
 			if (message.errCode === 0) {
-				toggleActorModal(false);
+				setTimeout(() => {
+					toast('✅ Add actor successful')
+					navigate('/dashboard/Actors')
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
+					navigate('/dashboard/Actors')
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -45,7 +66,10 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 		try {
 			let message = await editActorApi(actorState);
 			if (message.errCode === 0) {
-				toggleActorModal(false);
+				setTimeout(() => {
+					toast('✅ Edit actor successful')
+					navigate('/dashboard/Actors')
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -55,8 +79,10 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 	useEffect(() => {
 		if (actorID) {
 			getActor();
+		} else {
+			setTitle('Add');
 		}
-	}, [actorID]);
+	}, []);
 
 	const handleChange = (e) => {
 		const { id, value } = e.target;
@@ -83,7 +109,7 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 		if (file) {
 			const base64 = await commonUtils.getBase64(file);
 			const objectURL = URL.createObjectURL(file);
-			console.log(objectURL)
+			console.log(objectURL);
 			setPreviewImageURL(base64);
 			setActorState((prevState) => ({
 				...prevState,
@@ -108,13 +134,14 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 	};
 
 	const handleSubmitActor = () => {
+		setClick(true);
 		title === 'Add' ? addActor() : editActor();
 	};
 
 	return (
 		<div className="fixed inset-0 z-10">
 			<div
-				onClick={toggleActorModal}
+				onClick={() => navigate('/dashboard/Actors')}
 				className="w-full h-full bg-black opacity-50"></div>
 			<div className="absolute w-7/12 h-5/6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded">
 				<div className="p-4 flex justify-center flex-col items-center mt-[3%]">
@@ -221,20 +248,30 @@ export default function ActorModal({ toggleActorModal, actorID, title }) {
 							</div>
 						</div>
 
-						<Button
-							variant="solid"
-							color="blue"
-							className="w-24"
-							onClick={handleSubmitActor}>
-							Save
-						</Button>
-						<Button
-							variant="outlined"
-							color="red"
-							className="ml-4"
-							onClick={toggleActorModal}>
-							Cancle
-						</Button>
+						<div className="flex">
+							<div>
+								{click ? (
+									<div className="w-24 bg-blue-500 flex justify-center py-2 rounded-md">
+										<Spinner className="h-6 w-6" color="" />
+									</div>
+								) : (
+									<Button
+										variant="solid"
+										color="blue"
+										className="w-24"
+										onClick={handleSubmitActor}>
+										Save
+									</Button>
+								)}
+							</div>
+							<Button
+								variant="outlined"
+								color="red"
+								className="ml-4"
+								onClick={() => navigate('/dashboard/Actors')}>
+								Cancle
+							</Button>
+						</div>
 					</form>
 				</div>
 			</div>
