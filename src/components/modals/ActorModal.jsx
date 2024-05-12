@@ -53,7 +53,7 @@ export default function ActorModal() {
 				}, 1500);
 			}else{
 				setTimeout(() => {
-					toast(`❌ ${message.ereMessage}`)
+					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Actors')
 				}, 1500);
 			}

@@ -194,53 +194,51 @@ export default function CategoryPage() {
                             </div>
                           </td>
 
-                          <td className={classes}>
-                            <div className="flex flex-col min-w-80">
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal"
-                              >
-                                {name}
-                              </Typography>
-                            </div>
-                          </td>
-                          <td className={classes}>
-                            <Link to={`edit-genre/:${genreID}`}>
-                              <Tooltip content="Edit Genre">
-                                <IconButton variant="text">
-                                  <PencilIcon className="h-4 w-4 text-yellow-800" />
-                                </IconButton>
-                              </Tooltip>
-                            </Link>
-                            <Tooltip content="Delete Genre">
-                              <IconButton
-                                variant="text"
-                                onClick={() => {
-                                  deleteGenre({ genreID });
-                                  notify();
-                                }}
-                              >
-                                <TrashIcon className="h-4 w-4 text-red-500" />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              )}
-            </CardBody>
-          </div>
-          <PaginationFooter
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handlePrevPage={handlePrevPage}
-            handleNextPage={handleNextPage}
-          />
-        </Card>
-      </div>
-    </div>
-  );
+													<td className={classes}>
+														<div className="flex flex-col min-w-80">
+															<Typography
+																variant="small"
+																color="blue-gray"
+																className="font-normal">
+																{name}
+															</Typography>
+														</div>
+													</td>
+													<td className={classes}>
+														<Link to={`edit-genre/:${genreID}`}>
+															<Tooltip content="Edit Genre">
+																<IconButton variant="text">
+																	<PencilIcon className="h- w-4 text-yellow-800" />
+																</IconButton>
+															</Tooltip>
+														</Link>
+														<Tooltip content="Delete Genre">
+															<IconButton
+																variant="text"
+																onClick={() => {
+																	deleteGenre({ genreID });
+																	notify();
+																}}>
+																<TrashIcon className="h-4 w-4 text-red-500" />
+															</IconButton>
+														</Tooltip>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							)}
+						</CardBody>
+					</div>
+					<PaginationFooter
+						currentPage={currentPage}
+						totalPages={totalPages}
+						handlePrevPage={handlePrevPage}
+						handleNextPage={handleNextPage}
+					/>
+				</Card>
+			</div>
+		</div>
+	);
 }

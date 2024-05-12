@@ -131,7 +131,7 @@ export default function MovieModal() {
 				}, 1500);
 			}else{
 				setTimeout(() => {
-					toast(`❌ ${message.ereMessage}`)
+					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Movies')
 				}, 1500);
 			}

@@ -65,7 +65,8 @@ export default function GenreModal() {
 					navigate('/dashboard/Categories');
 				}, 1500);
 			}else{
-				toast(`❌ ${message.ereMessage}`)
+				// toast.error(` ${message.ereMessage}`)
+				toast.error(`❌ ${message.ereMessage}`)
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
 				}, 1500);
