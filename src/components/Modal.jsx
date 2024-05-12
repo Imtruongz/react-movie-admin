@@ -79,7 +79,7 @@ export default function Modal() {
 				setTimeout(() => {
 					toast('✅ Edit user successful')
 					navigate('/dashboard/Accounts');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

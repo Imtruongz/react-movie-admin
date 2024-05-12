@@ -52,12 +52,12 @@ export default function DirectorModal() {
 				setTimeout(() => {
 					toast('✅ Add actor successful')
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
 					toast(`❌ ${message.ereMessage}`)
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -71,7 +71,7 @@ export default function DirectorModal() {
 				setTimeout(() => {
 					toast('✅ Edit actor successful')
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

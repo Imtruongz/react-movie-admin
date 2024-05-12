@@ -63,12 +63,12 @@ export default function GenreModal() {
 				notify();
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}else{
 				toast(`❌ ${message.ereMessage}`)
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -82,7 +82,7 @@ export default function GenreModal() {
 				notify();
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
