@@ -203,7 +203,7 @@ export default function CategoryPage() {
 														<Link to={`edit-genre/:${genreID}`}>
 															<Tooltip content="Edit Genre">
 																<IconButton variant="text">
-																	<PencilIcon className="h-4 w-4 text-yellow-800" />
+																	<PencilIcon className="h- w-4 text-yellow-800" />
 																</IconButton>
 															</Tooltip>
 														</Link>
