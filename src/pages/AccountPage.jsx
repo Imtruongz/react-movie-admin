@@ -13,8 +13,8 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import PaginationFooter from "../components/Pagination";
-import Search from "../components/Search";
+import PaginationFooter from "../components/common/Pagination";
+import Search from "../components/common/Search";
 import {
   getAllUsers,
   handleDeleteUserApi,

@@ -6,10 +6,9 @@ import {
 	Typography,
 } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
-import Input from './Input';
-import { UserFields } from '../constants/FormFields';
-import { getAllUsers } from '../services/userService';
-import { handleUpdateUserDataApi } from '../services/userService';
+import Input from '../common/Input';
+import { UserFields } from '../../constants/FormFields';
+import { handleUpdateUserDataApi, getAllUsers } from '../../services/userService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

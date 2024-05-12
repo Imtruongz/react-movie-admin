@@ -1,15 +1,15 @@
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
-import Input from './Input';
-import { actorFields } from '../constants/FormFields';
+import Input from '../common/Input';
+import { actorFields } from '../../constants/FormFields';
 import { DatePicker, Image } from 'antd';
 import dayjs from 'dayjs';
-import commonUtils from '../utils/commonUtils';
+import commonUtils from '../../utils/commonUtils';
 import {
 	createNewDirectorApi,
 	editDirectorApi,
 	getAllDirectors,
-} from '../services/directorService';
+} from '../../services/directorService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

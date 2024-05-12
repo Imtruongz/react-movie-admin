@@ -11,8 +11,8 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import PaginationFooter from "../components/Pagination";
-import Search from "../components/Search";
+import PaginationFooter from "../components/common/Pagination";
+import Search from "../components/common/Search";
 import {
   deleteMovie,
   getAllMovies,

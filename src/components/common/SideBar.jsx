@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from '@fortawesome/free-solid-svg-icons';
-import Routes from '../routes/routes';
+import Routes from '../../routes/routes';
 import { Link } from 'react-router-dom';
 import { Tooltip } from '@material-tailwind/react';
 

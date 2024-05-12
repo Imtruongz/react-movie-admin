@@ -17,8 +17,8 @@ import {
   getAllActors,
   searchActorApi,
 } from "../services/actorService";
-import PaginationFooter from "../components/Pagination";
-import Search from "../components/Search";
+import PaginationFooter from "../components/common/Pagination";
+import Search from "../components/common/Search";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

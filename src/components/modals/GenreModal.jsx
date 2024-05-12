@@ -4,8 +4,8 @@ import {
 	getAllGenres,
 	handleCreateNewGenreApi,
 	handleUpdateGenreDataApi,
-} from '../services/genreService';
-import Input from './Input';
+} from '../../services/genreService';
+import Input from '../common/Input';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

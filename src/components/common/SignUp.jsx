@@ -1,48 +1,49 @@
 import { useState } from "react";
-import { loginFields } from "../constants/FormFieldsAuth";
+import { signupFields } from "../../constants/FormFieldsAuth";
 import FormAction from "./FormAction";
-import FormExtra from "./FormExtra";
 import Input from "./InputAuth";
-import { handleLoginApi } from "../services/userService";
 import { useNavigate } from "react-router-dom";
+import { handleSignUpApi } from "../../services/userService";
 
-const fields = loginFields;
+const fields = signupFields;
 let fieldsState = {};
+
 fields.forEach((field) => (fieldsState[field.id] = ""));
 
-export default function Login() {
+export default function Signup() {
   const navigate = useNavigate();
-  const [loginState, setLoginState] = useState(fieldsState);
+  const [signupState, setSignupState] = useState(fieldsState);
   const [errMessage, setErrMessage] = useState("");
 
-  const handleChange = (e) => {
-    setLoginState({ ...loginState, [e.target.id]: e.target.value });
-  };
+  const handleChange = (e) =>
+    setSignupState({ ...signupState, [e.target.id]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    authenticateUser(e);
+    // console.log(signupState);
+    createAccount(e);
   };
 
-  // Handle Login API Integration here
-  const authenticateUser = async (e) => {
+  //handle Signup API Integration here
+  const createAccount = async (e) => {
+    const roleID = 2;
     try {
       setErrMessage("");
-      let data = await handleLoginApi(
+      let data = await handleSignUpApi(
         e.target.email.value,
-        e.target.password.value
+        e.target.password.value,
+        roleID
       );
-      if (data && data.errCode !== 0) {
-        setErrMessage(data.message);
+      if (e.target.password.value !== e.target.confirm_password.value) {
+        setErrMessage("Please re-enter your password");
       } else {
-        // Lưu thông tin người dùng vào Local Storage
-        localStorage.setItem("userData", JSON.stringify(data.user));
-        if (data.user.roleID === 1) {
-          navigate("/dashboard/Home");
+        if (data && data.errCode !== 0) {
+          setErrMessage(data.message);
+        } else {
+          navigate("/");
         }
       }
     } catch (error) {
-      console.log("Error in authenticateUser:", error);
       if (error.response) {
         if (error.response.data) {
           setErrMessage(error.response.data.message);
@@ -53,12 +54,12 @@ export default function Login() {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="-space-y-px">
+      <div className="">
         {fields.map((field) => (
           <Input
             key={field.id}
             handleChange={handleChange}
-            value={loginState[field.id]}
+            value={signupState[field.id]}
             labelText={field.labelText}
             labelFor={field.labelFor}
             id={field.id}
@@ -69,12 +70,11 @@ export default function Login() {
             customClass={field.customClass}
           />
         ))}
+        <div>
+          <p className="text-red-700">{errMessage}</p>
+        </div>
+        <FormAction handleSubmit={handleSubmit} text="Signup" />
       </div>
-      <div>
-        <p className="text-red-700">{errMessage}</p>
-      </div>
-      <FormExtra linkName="Forgot your password?" linkUrl={"/ForgotPw"} />
-      <FormAction handleSubmit={handleSubmit} text="Login" />
     </form>
   );
 }
