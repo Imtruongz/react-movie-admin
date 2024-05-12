@@ -7,6 +7,7 @@ import {
 } from '../services/genreService';
 import Input from './Input';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function GenreModal() {
 	const [genreState, setGenreState] = useState({});
@@ -19,6 +20,7 @@ export default function GenreModal() {
 	if (id) {
 		genreID = id.split(':').filter((el) => el !== '');
 	}
+
 
 	const [title, setTitle] = useState('Edit');
 
@@ -58,9 +60,15 @@ export default function GenreModal() {
 		try {
 			let message = await handleCreateNewGenreApi(value);
 			if (message.errCode === 0) {
+				notify();
 				setTimeout(() => {
-					navigate('/dashboard/Categories')
-				}, 3000); 
+					navigate('/dashboard/Categories');
+				}, 3000);
+			}else{
+				toast(`❌ ${message.ereMessage}`)
+				setTimeout(() => {
+					navigate('/dashboard/Categories');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -71,14 +79,17 @@ export default function GenreModal() {
 		try {
 			let message = await handleUpdateGenreDataApi(genreID, value);
 			if (message.errCode === 0) {
+				notify();
 				setTimeout(() => {
-					navigate('/dashboard/Categories')
-				}, 3000); 
+					navigate('/dashboard/Categories');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
+	const notify = () => toast(`✅ ${title} genre successful!`);
 
 	return (
 		<div className="fixed inset-0 z-10">

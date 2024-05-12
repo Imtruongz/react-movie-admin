@@ -11,6 +11,7 @@ import {
 import dayjs from 'dayjs';
 import commonUtils from '../utils/commonUtils';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function ActorModal() {
 	const navigate = useNavigate();
@@ -47,6 +48,12 @@ export default function ActorModal() {
 			let message = await createNewActorApi(actorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Add actor successful')
+					navigate('/dashboard/Actors')
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
 					navigate('/dashboard/Actors')
 				}, 3000);
 			}
@@ -60,6 +67,7 @@ export default function ActorModal() {
 			let message = await editActorApi(actorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Edit actor successful')
 					navigate('/dashboard/Actors')
 				}, 3000);
 			}

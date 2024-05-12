@@ -1,25 +1,25 @@
 import axios from "../axious";
 
 const getAllMovies = (id) => {
-  return axios.get(`/api/get-all-movies?id=${id}`, {
+  return axios.get(`/api/movie/get-all-movies?id=${id}`, {
     movieID: id,
   });
 };
 
 const createNewMovieApi = (movieData) => {
-  return axios.post("/api/create-new-movie", {
+  return axios.post("/api/movie/create-new-movie", {
     movie: movieData,
   });
 };
 
 const editMovieApi = (movieData) => {
-  return axios.put("/api/edit-movie", {
+  return axios.put("/api/movie/edit-movie", {
     movie: movieData,
   });
 };
 
 const deleteMovie = (movieID) => {
-  return axios.delete("/api/delete-movie", {
+  return axios.delete("/api/movie/delete-movie", {
     data: {
       movieID: movieID,
     },

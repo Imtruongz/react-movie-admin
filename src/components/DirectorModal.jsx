@@ -11,6 +11,7 @@ import {
 	getAllDirectors,
 } from '../services/directorService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function DirectorModal() {
 	const navigate = useNavigate();
@@ -49,6 +50,12 @@ export default function DirectorModal() {
 			let message = await createNewDirectorApi(directorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Add actor successful')
+					navigate('/dashboard/Directors');
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
 					navigate('/dashboard/Directors');
 				}, 3000);
 			}
@@ -62,6 +69,7 @@ export default function DirectorModal() {
 			let message = await editDirectorApi(directorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Edit actor successful')
 					navigate('/dashboard/Directors');
 				}, 3000);
 			}

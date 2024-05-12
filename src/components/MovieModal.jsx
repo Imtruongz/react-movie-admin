@@ -23,6 +23,7 @@ import { getAllCountries } from '../services/movieService';
 
 import { getAllDirectors } from '../services/directorService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const filterOption = (input, option) =>
 	(option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -125,6 +126,12 @@ export default function MovieModal() {
 			let message = await createNewMovieApi(movieState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Add movie successful')
+					navigate('/dashboard/Movies')
+				}, 3000);
+			}else{
+				setTimeout(() => {
+					toast(`❌ ${message.ereMessage}`)
 					navigate('/dashboard/Movies')
 				}, 3000);
 			}
@@ -140,6 +147,7 @@ export default function MovieModal() {
 			console.log(movieState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
+					toast('✅ Edit movie successful')
 					navigate('/dashboard/Movies')
 				}, 3000);
 			}

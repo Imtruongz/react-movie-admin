@@ -11,6 +11,7 @@ import { UserFields } from '../constants/FormFields';
 import { getAllUsers } from '../services/userService';
 import { handleUpdateUserDataApi } from '../services/userService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Modal() {
 	const navigate = useNavigate();
@@ -75,9 +76,10 @@ export default function Modal() {
 			setClick(true);
 
 			if (message.errCode === 0) {
-				setTimeout(()=>{
-          navigate('/dashboard/Accounts');
-        },3000)
+				setTimeout(() => {
+					toast('✅ Edit user successful')
+					navigate('/dashboard/Accounts');
+				}, 3000);
 			}
 		} catch (error) {
 			console.log(error);
@@ -166,8 +168,8 @@ export default function Modal() {
 							</Select>
 						</div>
 
-						<div className='flex'>
-							<div >
+						<div className="flex">
+							<div>
 								{click ? (
 									<div className="w-24 bg-blue-500 flex justify-center py-2 rounded-md">
 										<Spinner className="h-6 w-6" color="" />

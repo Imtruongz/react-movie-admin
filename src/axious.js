@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import _ from 'lodash';
 
 const instance = axios.create({
     baseURL: `http://localhost:8080`,

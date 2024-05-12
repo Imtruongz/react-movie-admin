@@ -12,7 +12,7 @@ import {
 	IconButton,
 	Tooltip,
 } from '@material-tailwind/react';
-import { Link, } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PaginationFooter from '../components/Pagination';
 import Search from '../components/Search';
 import {
@@ -20,6 +20,7 @@ import {
 	handleDeleteUserApi,
 	searchUserApi,
 } from '../services/userService';
+import { toast } from 'react-toastify';
 
 const TABS = [
 	{
@@ -41,7 +42,6 @@ const TABLE_HEAD = ['Name', 'Role', 'Gender', 'Phone number', 'Action'];
 const ITEMS_PER_PAGE = 6;
 
 export default function AccountPage() {
-	const [modal, setModal] = useState(false);
 	const [check, setCheck] = useState(false);
 	const [tableRows, setTableRows] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -66,6 +66,7 @@ export default function AccountPage() {
 		const user = { userID };
 		console.log(user);
 		try {
+			toast('✅ Delete account successful')
 			await handleDeleteUserApi(user.userID);
 			setCheck(true);
 		} catch (error) {
@@ -84,12 +85,16 @@ export default function AccountPage() {
   };
 
 	useEffect(() => {
-		getAccount().then(() => setDataLoaded(true));
-	}, [check || modal]);
+		getAccount().then(
+			setTimeout(() => {
+				setDataLoaded(true);
+			}, 2000)
+		);
+	}, [check]);
 
 	const totalPages = dataLoaded
 		? Math.ceil(tableRows.length / ITEMS_PER_PAGE)
-		: 0;
+		: 1;
 
 	const handleNextPage = () => {
 		if (currentPage < totalPages) {
@@ -134,118 +139,131 @@ export default function AccountPage() {
 							/>
 						</CardHeader>
 						<CardBody className="p-1 px-0">
-							<table className=" w-full min-w-max table-auto text-left">
-								<thead>
-									<tr>
-										{TABLE_HEAD.map((head) => (
-											<th
-												key={head}
-												className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-3">
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal leading-none opacity-70">
-													{head}
-												</Typography>
-											</th>
-										))}
-									</tr>
-								</thead>
-								<tbody>
-									{visibleItems.map(
-										({
-											userID,
-											img,
-											email,
-											fullName,
-											roleID,
-											gender,
-											phoneNumber,
-											address,
-										}) => {
-											const isLast =
-												userID === tableRows[tableRows.length - 1].userID;
-											const classes = isLast
-												? 'p-4'
-												: 'p-4 border-b border-blue-gray-50';
-											const role = roleID === 1 ? 'Admin' : 'User';
-											const genderName = gender === 1 ? 'Male' : 'Female';
-											const avatar =
-												img === ''
-													? ''
-													: 'https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg';
-											return (
-												<tr key={userID}>
-													<td className={classes}>
-														<div className="flex items-center gap-3">
-															<Avatar src={avatar} alt={fullName} size="sm" />
+							{!dataLoaded ? (
+								Array.from({ length: tableRows.length > 6 ? ITEMS_PER_PAGE : tableRows.length }, (_, index) => (
+									<div className="p-5">
+										<Typography
+											as="div"
+											variant="paragraph"
+											className=" h-6 w-full rounded-full bg-gray-300 my-2"
+											key={index}>
+											&nbsp;
+										</Typography>
+									</div>
+								))
+							) : (
+								<table className=" w-full min-w-max table-auto text-left">
+									<thead>
+										<tr>
+											{TABLE_HEAD.map((head) => (
+												<th
+													key={head}
+													className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-3">
+													<Typography
+														variant="small"
+														color="blue-gray"
+														className="font-normal leading-none opacity-70">
+														{head}
+													</Typography>
+												</th>
+											))}
+										</tr>
+									</thead>
+									<tbody>
+										{visibleItems.map(
+											({
+												userID,
+												img,
+												email,
+												fullName,
+												roleID,
+												gender,
+												phoneNumber,
+												address,
+											}) => {
+												const isLast =
+													userID === tableRows[tableRows.length - 1].userID;
+												const classes = isLast
+													? 'p-4'
+													: 'p-4 border-b border-blue-gray-50';
+												const role = roleID === 1 ? 'Admin' : 'User';
+												const genderName = gender === 1 ? 'Male' : 'Female';
+												const avatar =
+													img === ''
+														? ''
+														: 'https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg';
+												return (
+													<tr key={userID}>
+														<td className={classes}>
+															<div className="flex items-center gap-3">
+																<Avatar src={avatar} alt={fullName} size="sm" />
+																<div className="flex flex-col">
+																	<Typography
+																		variant="small"
+																		color="blue-gray"
+																		className="font-normal">
+																		{fullName}
+																	</Typography>
+																	<Typography
+																		variant="small"
+																		color="blue-gray"
+																		className="font-normal opacity-70">
+																		{email}
+																	</Typography>
+																</div>
+															</div>
+														</td>
+														<td className={classes}>
 															<div className="flex flex-col">
 																<Typography
 																	variant="small"
 																	color="blue-gray"
-																	className="font-normal">
-																	{fullName}
+																	className="font-normal opacity-70">
+																	{role}
 																</Typography>
+															</div>
+														</td>
+														<td className={classes}>
+															<div className="w-max">
 																<Typography
 																	variant="small"
 																	color="blue-gray"
-																	className="font-normal opacity-70">
-																	{email}
+																	className="font-normal">
+																	{genderName}
 																</Typography>
 															</div>
-														</div>
-													</td>
-													<td className={classes}>
-														<div className="flex flex-col">
-															<Typography
-																variant="small"
-																color="blue-gray"
-																className="font-normal opacity-70">
-																{role}
-															</Typography>
-														</div>
-													</td>
-													<td className={classes}>
-														<div className="w-max">
+														</td>
+														<td className={classes}>
 															<Typography
 																variant="small"
 																color="blue-gray"
 																className="font-normal">
-																{genderName}
+																{phoneNumber}
 															</Typography>
-														</div>
-													</td>
-													<td className={classes}>
-														<Typography
-															variant="small"
-															color="blue-gray"
-															className="font-normal">
-															{phoneNumber}
-														</Typography>
-													</td>
-													<td className={classes}>
-														<Link
-															to={`edit-user/:${userID}`}>
-															<Tooltip content="Edit User">
-																<IconButton variant="text">
-																	<PencilIcon className="h-4 w-4 text-yellow-800" />
+														</td>
+														<td className={classes}>
+															<Link to={`edit-user/:${userID}`}>
+																<Tooltip content="Edit User">
+																	<IconButton variant="text">
+																		<PencilIcon className="h-4 w-4 text-yellow-800" />
+																	</IconButton>
+																</Tooltip>
+															</Link>
+															<Tooltip content="Delete User">
+																<IconButton
+																	variant="text"
+																	onClick={() => handleDeleteUser({ userID })}>
+																	<TrashIcon className="h-4 w-4 text-red-500" />
 																</IconButton>
 															</Tooltip>
-														</Link>
-														<Tooltip content="Delete User">
-															<IconButton
-																variant="text"
-																onClick={() => handleDeleteUser({ userID })}>
-																<TrashIcon className="h-4 w-4 text-red-500" />
-															</IconButton>
-														</Tooltip>
-													</td>
-												</tr>
-											);
-										}
-									)}
-								</tbody>
-							</table>
+														</td>
+													</tr>
+												);
+											}
+										)}
+									</tbody>
+								</table>
+							)}
 						</CardBody>
 					</div>
 

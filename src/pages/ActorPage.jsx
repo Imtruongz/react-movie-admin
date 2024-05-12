@@ -12,7 +12,6 @@ import {
 	Tooltip,
 } from '@material-tailwind/react';
 
-import ActorModal from '../components/ActorModal';
 import {
 	deleteActor,
 	getAllActors,
@@ -22,6 +21,7 @@ import PaginationFooter from '../components/Pagination';
 import Search from '../components/Search';
 import { debounce } from 'lodash';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const TABLE_HEAD = ['Name', 'National', 'Birth Date', 'Bio', 'Edit'];
 
@@ -54,6 +54,8 @@ export default function ActorPage() {
 
 	const delteActor = async ({ actorID }) => {
 		try {
+			toast('✅ Delete actor successful')
+		
 			await deleteActor(actorID);
 			setCheck(!check);
 		} catch (error) {
@@ -74,12 +76,16 @@ export default function ActorPage() {
 	const debouncedHandleSearch = debounce(handleSearch, 300);
 
 	useEffect(() => {
-		getActor().then(() => setDataLoaded(true));
+		getActor().then(
+			setTimeout(() => {
+				setDataLoaded(true);
+			}, 2000)
+		);
 	}, [check]);
 
 	const totalPages = dataLoaded
 		? Math.ceil(tableRows.length / ITEMS_PER_PAGE)
-		: 0;
+		: 1;
 
 	const handleNextPage = () => {
 		if (currentPage < totalPages) {
@@ -121,114 +127,128 @@ export default function ActorPage() {
 							</div>
 						</CardHeader>
 						<CardBody className="p-1 px-0">
-							<table className=" w-full min-w-max table-auto text-left">
-								<thead>
-									<tr>
-										{TABLE_HEAD.map((head, index) => (
-											<th
-												key={head}
-												className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-3 ${
-													index === TABLE_HEAD.length - 1 ? 'pl-6' : ''
-												}`}>
-												<Typography
-													variant="small"
-													color="blue-gray"
-													className="font-normal leading-none opacity-70">
-													{head}
-												</Typography>
-											</th>
-										))}
-									</tr>
-								</thead>
-								<tbody>
-									{visibleItems.map(
-										(
-											{
-												actorID,
-												image,
-												name,
-												birthdate,
-												nationality,
-												biography,
-											},
-											index
-										) => {
-											const isLast = index === tableRows.length - 1;
-											const classes = isLast
-												? 'p-4'
-												: 'p-4 border-b border-blue-gray-50';
+							{!dataLoaded ? (
+								Array.from({ length: tableRows.length > 6 ? ITEMS_PER_PAGE : tableRows.length }, (_, index) => (
+									<div className="p-5">
+										<Typography
+											as="div"
+											variant="paragraph"
+											className=" h-6 w-full rounded-full bg-gray-300 my-2"
+											key={index}>
+											&nbsp;
+										</Typography>
+									</div>
+								))
+							) : (
+								<table className=" w-full min-w-max table-auto text-left">
+									<thead>
+										<tr>
+											{TABLE_HEAD.map((head, index) => (
+												<th
+													key={head}
+													className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-3 ${
+														index === TABLE_HEAD.length - 1 ? 'pl-6' : ''
+													}`}>
+													<Typography
+														variant="small"
+														color="blue-gray"
+														className="font-normal leading-none opacity-70">
+														{head}
+													</Typography>
+												</th>
+											))}
+										</tr>
+									</thead>
+									<tbody>
+										{visibleItems.map(
+											(
+												{
+													actorID,
+													image,
+													name,
+													birthdate,
+													nationality,
+													biography,
+												},
+												index
+											) => {
+												const isLast = index === tableRows.length - 1;
+												const classes = isLast
+													? 'p-4'
+													: 'p-4 border-b border-blue-gray-50';
 
-											return (
-												<tr key={name}>
-													<td className={classes}>
-														<div className="flex items-center gap-3">
-															<Avatar src={image} alt={name} size="sm" />
+												return (
+													<tr key={name}>
+														<td className={classes}>
+															<div className="flex items-center gap-3">
+																<Avatar src={image} alt={name} size="sm" />
 
+																<div className="flex flex-col">
+																	<Typography
+																		variant="small"
+																		color="blue-gray"
+																		className="font-normal">
+																		{name}
+																	</Typography>
+																</div>
+															</div>
+														</td>
+														<td className={classes}>
 															<div className="flex flex-col">
 																<Typography
 																	variant="small"
 																	color="blue-gray"
 																	className="font-normal">
-																	{name}
+																	{nationality}
 																</Typography>
 															</div>
-														</div>
-													</td>
-													<td className={classes}>
-														<div className="flex flex-col">
+														</td>
+														<td className={classes}>
 															<Typography
 																variant="small"
 																color="blue-gray"
 																className="font-normal">
-																{nationality}
+																{birthdate}
 															</Typography>
-														</div>
-													</td>
-													<td className={classes}>
-														<Typography
-															variant="small"
-															color="blue-gray"
-															className="font-normal">
-															{birthdate}
-														</Typography>
-													</td>
-													<td
-														className={classes}
-														style={{
-															overflow: 'hidden',
-															textOverflow: 'ellipsis',
-														}}>
-														<Typography
-															variant="small"
-															color="blue-gray"
-															className="font-normal whitespace-nowrap max-w-28">
-															{biography}
-														</Typography>
-													</td>
-													<td className={classes}>
-														<Tooltip content="Edit Actor">
-															<IconButton
-																variant="text"
-																onClick={() =>
-																	navigate(`edit-actor/:${actorID}`)
-																}>
-																<PencilIcon className="h-4 w-4 text-yellow-800" />
-															</IconButton>
-														</Tooltip>
-														<Tooltip content="Delete Actor">
-															<IconButton
-																variant="text"
-																onClick={() => delteActor({ actorID })}>
-																<TrashIcon className="h-4 w-4 text-red-500" />
-															</IconButton>
-														</Tooltip>
-													</td>
-												</tr>
-											);
-										}
-									)}
-								</tbody>
-							</table>
+														</td>
+														<td
+															className={classes}
+															style={{
+																overflow: 'hidden',
+																textOverflow: 'ellipsis',
+															}}>
+															<Typography
+																variant="small"
+																color="blue-gray"
+																className="font-normal whitespace-nowrap max-w-28">
+																{biography}
+															</Typography>
+														</td>
+														<td className={classes}>
+															<Tooltip content="Edit Actor">
+																<IconButton
+																	variant="text"
+																	onClick={() =>
+																		navigate(`edit-actor/:${actorID}`)
+																	}>
+																	<PencilIcon className="h-4 w-4 text-yellow-800" />
+																</IconButton>
+															</Tooltip>
+															<Tooltip content="Delete Actor">
+																<IconButton
+																	variant="text"
+																	onClick={() => delteActor({ actorID })}>
+																	<TrashIcon className="h-4 w-4 text-red-500" />
+																</IconButton>
+															</Tooltip>
+														</td>
+													</tr>
+												);
+											}
+										)}
+									</tbody>
+								</table>
+							)}
 						</CardBody>
 					</div>
 					<PaginationFooter
