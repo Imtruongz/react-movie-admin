@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import InfoItemField from "../constants/InfoItemFields";
-import InfoCard from "../components/InfoCard";
+import InfoCard from "../components/common/InfoCard";
 import { getCountMovies } from "../services/movieService";
 import { getCountUser } from "../services/userService";
 

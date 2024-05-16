@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ForgotPwFields } from "../constants/FormFieldsAuth";
+import { ForgotPwFields } from "../../constants/FormFieldsAuth";
 import FormAction from "./FormAction";
 import Input from "./InputAuth";
 

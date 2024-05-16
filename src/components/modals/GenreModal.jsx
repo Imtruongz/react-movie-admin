@@ -4,8 +4,8 @@ import {
 	getAllGenres,
 	handleCreateNewGenreApi,
 	handleUpdateGenreDataApi,
-} from '../services/genreService';
-import Input from './Input';
+} from '../../services/genreService';
+import Input from '../common/Input';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -63,12 +63,13 @@ export default function GenreModal() {
 				notify();
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}else{
-				toast(`❌ ${message.ereMessage}`)
+				// toast.error(` ${message.ereMessage}`)
+				toast.error(`❌ ${message.ereMessage}`)
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -82,7 +83,7 @@ export default function GenreModal() {
 				notify();
 				setTimeout(() => {
 					navigate('/dashboard/Categories');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

@@ -1,49 +1,48 @@
 import { useState } from "react";
-import { signupFields } from "../constants/FormFieldsAuth";
+import { loginFields } from "../../constants/FormFieldsAuth";
 import FormAction from "./FormAction";
+import FormExtra from "./FormExtra";
 import Input from "./InputAuth";
+import { handleLoginApi } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
-import { handleSignUpApi } from "../services/userService";
 
-const fields = signupFields;
+const fields = loginFields;
 let fieldsState = {};
-
 fields.forEach((field) => (fieldsState[field.id] = ""));
 
-export default function Signup() {
+export default function Login() {
   const navigate = useNavigate();
-  const [signupState, setSignupState] = useState(fieldsState);
+  const [loginState, setLoginState] = useState(fieldsState);
   const [errMessage, setErrMessage] = useState("");
 
-  const handleChange = (e) =>
-    setSignupState({ ...signupState, [e.target.id]: e.target.value });
+  const handleChange = (e) => {
+    setLoginState({ ...loginState, [e.target.id]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(signupState);
-    createAccount(e);
+    authenticateUser(e);
   };
 
-  //handle Signup API Integration here
-  const createAccount = async (e) => {
-    const roleID = 2;
+  // Handle Login API Integration here
+  const authenticateUser = async (e) => {
     try {
       setErrMessage("");
-      let data = await handleSignUpApi(
+      let data = await handleLoginApi(
         e.target.email.value,
-        e.target.password.value,
-        roleID
+        e.target.password.value
       );
-      if (e.target.password.value !== e.target.confirm_password.value) {
-        setErrMessage("Please re-enter your password");
+      if (data && data.errCode !== 0) {
+        setErrMessage(data.message);
       } else {
-        if (data && data.errCode !== 0) {
-          setErrMessage(data.message);
-        } else {
-          navigate("/");
+        // Lưu thông tin người dùng vào Local Storage
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        if (data.user.roleID === 1) {
+          navigate("/dashboard/Home");
         }
       }
     } catch (error) {
+      console.log("Error in authenticateUser:", error);
       if (error.response) {
         if (error.response.data) {
           setErrMessage(error.response.data.message);
@@ -54,12 +53,12 @@ export default function Signup() {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="">
+      <div className="-space-y-px">
         {fields.map((field) => (
           <Input
             key={field.id}
             handleChange={handleChange}
-            value={signupState[field.id]}
+            value={loginState[field.id]}
             labelText={field.labelText}
             labelFor={field.labelFor}
             id={field.id}
@@ -70,11 +69,12 @@ export default function Signup() {
             customClass={field.customClass}
           />
         ))}
-        <div>
-          <p className="text-red-700">{errMessage}</p>
-        </div>
-        <FormAction handleSubmit={handleSubmit} text="Signup" />
       </div>
+      <div>
+        <p className="text-red-700">{errMessage}</p>
+      </div>
+      <FormExtra linkName="Forgot your password?" linkUrl={"/ForgotPw"} />
+      <FormAction handleSubmit={handleSubmit} text="Login" />
     </form>
   );
 }

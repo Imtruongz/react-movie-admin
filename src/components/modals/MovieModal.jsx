@@ -1,9 +1,9 @@
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
-import Input from './Input';
+import Input from '../common/Input';
 import { Image, Select } from 'antd';
 
-import commonUtils from '../utils/commonUtils';
+import commonUtils from '../../utils/commonUtils';
 import {
 	createNewMovieApi,
 	editMovieApi,
@@ -11,17 +11,17 @@ import {
 	getAllDirectorsMovie,
 	getAllGenresMovie,
 	getAllMovies,
-} from '../services/movieService';
+} from '../../services/movieService';
 
-import { getAllGenres } from '../services/genreService';
+import { getAllGenres } from '../../services/genreService';
 
-import { getAllActors } from '../services/actorService';
+import { getAllActors } from '../../services/actorService';
 
-import { movieFields } from '../constants/FormFields';
+import { movieFields } from '../../constants/FormFields';
 
-import { getAllCountries } from '../services/movieService';
+import { getAllCountries } from '../../services/movieService';
 
-import { getAllDirectors } from '../services/directorService';
+import { getAllDirectors } from '../../services/directorService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -128,12 +128,12 @@ export default function MovieModal() {
 				setTimeout(() => {
 					toast('✅ Add movie successful')
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
-					toast(`❌ ${message.ereMessage}`)
+					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}
 			console.log(movieState);
 		} catch (error) {
@@ -149,7 +149,7 @@ export default function MovieModal() {
 				setTimeout(() => {
 					toast('✅ Edit movie successful')
 					navigate('/dashboard/Movies')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

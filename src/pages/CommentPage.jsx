@@ -12,10 +12,10 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 
-// import CommentModal from "../components/CommentModal";
+// import CommentModal from "../components/modals/CommentModal";
 // import { getAllcomments, deletecommentApi } from "../services/commentService";
-import PaginationFooter from "../components/Pagination";
-import Search from "../components/Search";
+import PaginationFooter from "../components/common/Pagination";
+import Search from "../components/common/Search";
 
 const TABLE_HEAD = ["User", "Movie", "Content", "Date", "Edit"];
 const ITEMS_PER_PAGE = 6;
@@ -119,7 +119,7 @@ export default function CommentPage() {
                     const isLast = index === visibleItems.length - 1;
                     const classes = isLast
                       ? "p-4"
-                      : "p-4 border-b border-blue-gray-50";
+                      : "px-4 pt-4 pb-3 border-b border-blue-gray-50";
                     return (
                       <tr key={commentID}>
                         <td className={classes}>

@@ -1,15 +1,15 @@
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
-import Input from './Input';
-import { actorFields } from '../constants/FormFields';
+import Input from '../common/Input';
+import { actorFields } from '../../constants/FormFields';
 import { DatePicker, Image } from 'antd';
 import dayjs from 'dayjs';
-import commonUtils from '../utils/commonUtils';
+import commonUtils from '../../utils/commonUtils';
 import {
 	createNewDirectorApi,
 	editDirectorApi,
 	getAllDirectors,
-} from '../services/directorService';
+} from '../../services/directorService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -52,12 +52,12 @@ export default function DirectorModal() {
 				setTimeout(() => {
 					toast('✅ Add actor successful')
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
-					toast(`❌ ${message.ereMessage}`)
+					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -71,7 +71,7 @@ export default function DirectorModal() {
 				setTimeout(() => {
 					toast('✅ Edit actor successful')
 					navigate('/dashboard/Directors');
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);

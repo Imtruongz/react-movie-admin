@@ -1,15 +1,15 @@
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
-import Input from './Input';
-import { actorFields } from '../constants/FormFields';
+import Input from '../common/Input';
+import { actorFields } from '../../constants/FormFields';
 import { DatePicker, Image } from 'antd';
 import {
 	createNewActorApi,
 	editActorApi,
 	getAllActors,
-} from '../services/actorService';
+} from '../../services/actorService';
 import dayjs from 'dayjs';
-import commonUtils from '../utils/commonUtils';
+import commonUtils from '../../utils/commonUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -50,12 +50,12 @@ export default function ActorModal() {
 				setTimeout(() => {
 					toast('✅ Add actor successful')
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}else{
 				setTimeout(() => {
-					toast(`❌ ${message.ereMessage}`)
+					toast.error(` ${message.ereMessage}`)
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
@@ -69,7 +69,7 @@ export default function ActorModal() {
 				setTimeout(() => {
 					toast('✅ Edit actor successful')
 					navigate('/dashboard/Actors')
-				}, 3000);
+				}, 1500);
 			}
 		} catch (error) {
 			console.log(error);
