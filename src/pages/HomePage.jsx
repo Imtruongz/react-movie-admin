@@ -41,18 +41,14 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([
-          fetchUserCount(),
-          fetchMovieCount()
-        ]);
+        await Promise.all([fetchUserCount(), fetchMovieCount()]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-4">

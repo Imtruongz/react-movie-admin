@@ -247,7 +247,7 @@ export default function DirectorModal() {
 							</div>
 						</div>
 
-						<div className="flex">
+						<div className="flex absolute bottom-5 right-5">
 							<div>
 								{click ? (
 									<div className="w-24 bg-blue-500 flex justify-center py-2 rounded-md">
