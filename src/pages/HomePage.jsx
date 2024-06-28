@@ -3,9 +3,11 @@ import InfoItemField from "../constants/InfoItemFields";
 import InfoCard from "../components/common/InfoCard";
 import { getCountMovies } from "../services/movieService";
 import { getCountUser } from "../services/userService";
+import { handleCountComment } from "../services/comment";
 
 const HomePage = () => {
   const [infoFields, setInfoFields] = useState(InfoItemField);
+  
 
   const updateFieldCount = (name, count) => {
     setInfoFields((currentFields) =>
@@ -38,10 +40,24 @@ const HomePage = () => {
     }
   };
 
+  const fetchCommentCount = async()=>{
+    try {
+      const response = await handleCountComment()
+      const commentCount = response.count
+      updateFieldCount('Comments', commentCount)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await Promise.all([fetchUserCount(), fetchMovieCount()]);
+        await Promise.all([
+          fetchUserCount(),
+          fetchMovieCount(),
+        ]);
+        fetchCommentCount()
       } catch (error) {
         console.error("Error fetching data:", error);
       }

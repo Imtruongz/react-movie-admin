@@ -80,9 +80,9 @@ export default function CategoryPage() {
     console.log(localStorage.getItem("jwt"));
   }, [check]);
 
-  const notify = () => {
-    toast.success(" Delete genre successful!");
-  };
+	const notify = () => {
+		toast.success(' Delete genre success!');
+	};
 
   const ITEMS_PER_PAGE = 6;
 

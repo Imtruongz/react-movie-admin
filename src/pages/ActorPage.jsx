@@ -52,9 +52,9 @@ export default function ActorPage() {
     }
   };
 
-  const delteActor = async ({ actorID }) => {
-    try {
-      toast.success(" Delete actor successful");
+	const delteActor = async ({ actorID }) => {
+		try {
+			toast.success(' Delete actor success');
 
       await deleteActor(actorID);
       setCheck(!check);

@@ -89,7 +89,7 @@ export default function GenreModal() {
 		}
 	};
 
-	const notify = () => toast(` ${title} genre successful!`);
+	const notify = () => toast.success(` ${title} genre success!`);
 
 	return (
 		<div className="fixed inset-0 z-10">

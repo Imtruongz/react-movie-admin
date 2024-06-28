@@ -27,7 +27,7 @@ const deleteMovie = (movieID) => {
 };
 
 const getAllCountries = (id) => {
-  return axios.get(`/api/get-all-countries?id=${id}`, {
+  return axios.get(`/api/country/get-all-countries?id=${id}`, {
     countryID: id,
   });
 };
@@ -51,7 +51,7 @@ const getAllDirectorsMovie = (id) => {
 };
 
 const searchMovieApi = (keyword) => {
-  return axios.get(`/api/get-search-movie?keyword=${keyword}`, {
+  return axios.get(`/api/movie/get-search-movie?keyword=${keyword}`, {
     keyword: keyword,
   });
 };

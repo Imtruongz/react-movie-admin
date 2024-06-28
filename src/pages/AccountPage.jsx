@@ -62,17 +62,17 @@ export default function AccountPage() {
     }
   };
 
-  const handleDeleteUser = async ({ userID }) => {
-    const user = { userID };
-    console.log(user);
-    try {
-      toast.success(" Delete account successful");
-      await handleDeleteUserApi(user.userID);
-      setCheck(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const handleDeleteUser = async ({ userID }) => {
+		const user = { userID };
+		console.log(user);
+		try {
+			toast.success(' Delete account success');
+			await handleDeleteUserApi(user.userID);
+			setCheck(true);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
   const handleSearch = async (keyword) => {
     try {

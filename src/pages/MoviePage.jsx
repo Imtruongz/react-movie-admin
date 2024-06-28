@@ -41,17 +41,17 @@ export default function MoviePage() {
     debouncedHandleSearch(value);
   };
 
-  const getMovie = async () => {
-    try {
-      let response = await getAllMovies("ALL");
-      setTableRows(response.movies);
-    } catch (error) {
-      console.error("Lỗi khi gọi API:", error);
-    }
-  };
-  const delteMovie = async ({ movieID }) => {
-    try {
-      toast.success(" Delete movie successful");
+	const getMovie = async () => {
+		try {
+			let response = await getAllMovies('ALL');
+			setTableRows(response.movies);
+		} catch (error) {
+			console.error('Lỗi khi gọi API:', error);
+		}
+	};
+	const delteMovie = async ({ movieID }) => {
+		try {
+			toast.success(' Delete movie success');
 
       await deleteMovie(movieID);
       setCheck(!check);
@@ -60,15 +60,15 @@ export default function MoviePage() {
     }
   };
 
-  const handleSearch = async (keyword) => {
-    try {
-      let response = await searchMovieApi(keyword);
-      setTableRows(response.movie.movieSearch);
-      setCurrentPage(1);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const handleSearch = async (keyword) => {
+		try {
+			let response = await searchMovieApi(keyword);
+			setTableRows(response.movie.movieSearch);
+			setCurrentPage(1);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
   const debouncedHandleSearch = debounce(handleSearch, 300);
 
@@ -99,108 +99,102 @@ export default function MoviePage() {
     }
   };
 
-  const visibleItems = tableRows
-    ? tableRows.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-      )
-    : [];
+	const visibleItems = tableRows
+		? tableRows.slice(
+				(currentPage - 1) * ITEMS_PER_PAGE,
+				currentPage * ITEMS_PER_PAGE
+		  )
+		: [];
 
-  return (
-    <div className="w-full h-full flex flex-col gap-y-4">
-      <div className="h-[calc(100vh-136px)]">
-        <Card className="h-full w-full flex flex-col justify-between ">
-          <div>
-            <CardHeader
-              floated={false}
-              shadow={false}
-              className="rounded-none flex flex-row justify-between items-center mt-2 my-2 mx-2"
-            >
-              <Search
-                value={valueSearch}
-                handleChange={handleChangeInputSearch}
-              />
-              <div>
-                <Button
-                  color="blue"
-                  className="py-2.5"
-                  onClick={() => naviaget("create-movie")}
-                >
-                  Add movie
-                </Button>
-              </div>
-            </CardHeader>
-            <CardBody className="p-0">
-              {dataLoaded && visibleItems.length === 0 ? (
-                <Typography
-                  variant="body"
-                  color="blue-gray"
-                  className="p-4 text-center"
-                >
-                  No genres found.
-                </Typography>
-              ) : !dataLoaded ? (
-                Array.from(
-                  {
-                    length:
-                      tableRows && tableRows.length > 6
-                        ? ITEMS_PER_PAGE
-                        : tableRows
-                        ? tableRows.length
-                        : 0,
-                  },
-                  (_, index) => (
-                    <div className="p-5">
-                      <Typography
-                        as="div"
-                        variant="paragraph"
-                        className=" h-6 w-full rounded-full bg-gray-300 my-2"
-                        key={index}
-                      >
-                        &nbsp;
-                      </Typography>
-                    </div>
-                  )
-                )
-              ) : (
-                <table className=" w-full min-w-max table-auto text-left">
-                  <thead>
-                    <tr>
-                      {TABLE_HEAD.map((head, index) => (
-                        <th
-                          key={head}
-                          className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-2 ${
-                            index === TABLE_HEAD.length - 1 ? "pl-6" : ""
-                          }`}
-                        >
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70"
-                          >
-                            {head}
-                          </Typography>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleItems.map(
-                      (
-                        {
-                          movieID,
-                          title,
-                          release,
-                          description,
-                          thumbnail,
-                          imdb,
-                        },
-                        index
-                      ) => {
-                        const isLast = index === tableRows.length - 1;
-                        const classes = isLast
-                          ? "p-4"
-                          : "p-4 border-b border-blue-gray-50";
+	return (
+		<div className="w-full h-full flex flex-col gap-y-4">
+			<div className="h-[calc(100vh-136px)]">
+				<Card className="h-full w-full flex flex-col justify-between ">
+					<div>
+						<CardHeader
+							floated={false}
+							shadow={false}
+							className="rounded-none flex flex-row justify-between items-center mt-2 my-2 mx-2">
+							<Search
+								value={valueSearch}
+								handleChange={handleChangeInputSearch}
+							/>
+							<div>
+								<Button
+									color="blue"
+									className="py-2.5"
+									onClick={() => naviaget('create-movie')}>
+									Add movie
+								</Button>
+							</div>
+						</CardHeader>
+						<CardBody className="p-1 px-0">
+							{dataLoaded && visibleItems.length === 0 ? (
+								<Typography
+									variant="body"
+									color="blue-gray"
+									className="p-4 text-center">
+									No genres found.
+								</Typography>
+							) : !dataLoaded ? (
+								Array.from(
+									{
+										length:
+											tableRows && tableRows.length > 6
+												? ITEMS_PER_PAGE
+												: tableRows
+												? tableRows.length
+												: 0,
+									},
+									(_, index) => (
+										<div className="p-5">
+											<Typography
+												as="div"
+												variant="paragraph"
+												className=" h-6 w-full rounded-full bg-gray-300 my-2"
+												key={index}>
+												&nbsp;
+											</Typography>
+										</div>
+									)
+								)
+							) : (
+								<table className=" w-full min-w-max table-auto text-left">
+									<thead>
+										<tr>
+											{TABLE_HEAD.map((head, index) => (
+												<th
+													key={head}
+													className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-3 ${
+														index === TABLE_HEAD.length - 1 ? 'pl-6' : ''
+													}`}>
+													<Typography
+														variant="small"
+														color="blue-gray"
+														className="font-normal leading-none opacity-70">
+														{head}
+													</Typography>
+												</th>
+											))}
+										</tr>
+									</thead>
+									<tbody>
+										{visibleItems.map(
+											(
+												{
+													movieID,
+													title,
+													release,
+													description,
+													thumbnail,
+													imdb,
+												},
+												index
+											) => {
+												const isLast = index === tableRows.length - 1;
+												const classes = isLast
+													? 'p-4'
+													: 'p-4 border-b border-blue-gray-50';
 
                         return (
                           <tr key={title}>

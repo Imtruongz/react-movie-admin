@@ -44,7 +44,7 @@ const searchUserApi = (keyword)=>{
 
 const getCountUser = () => {
 	return axios.get(`/api/user/count`);
-  };
+};
 
 export {
 	handleLoginApi,

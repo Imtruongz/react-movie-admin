@@ -48,7 +48,7 @@ export default function ActorModal() {
 			let message = await createNewActorApi(actorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
-					toast.success(' Add actor successful')
+					toast.success(' Add actor success')
 					navigate('/dashboard/Actors')
 				}, 3000);
 			}else{
@@ -67,7 +67,7 @@ export default function ActorModal() {
 			let message = await editActorApi(actorState);
 			if (message.errCode === 0) {
 				setTimeout(() => {
-					toast.success(' Edit actor successful')
+					toast.success(' Edit actor success')
 					navigate('/dashboard/Actors')
 				}, 3000);
 			}

@@ -52,9 +52,9 @@ export default function DirectorPage() {
     }
   };
 
-  const delteDirector = async ({ directorID }) => {
-    try {
-      toast.success(" Delete director successful");
+	const delteDirector = async ({ directorID }) => {
+		try {
+			toast.success(' Delete director success');
 
       await deleteDirectorApi(directorID);
       setCheck(!check);

@@ -127,40 +127,40 @@ export default function MovieModal() {
     }
   };
 
-  const addMovie = async () => {
-    try {
-      let message = await createNewMovieApi(movieState);
-      if (message.errCode === 0) {
-        setTimeout(() => {
-          toast.success(" Add movie successful");
-          navigate("/dashboard/Movies");
-        }, 3000);
-      } else {
-        setTimeout(() => {
-          toast.error(`❌ ${message.ereMessage}`);
-          navigate("/dashboard/Movies");
-        }, 3000);
-      }
-      console.log(movieState);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const addMovie = async () => {
+		try {
+			let message = await createNewMovieApi(movieState);
+			if (message.errCode === 0) {
+				setTimeout(() => {
+					toast.success(' Add movie success');
+					navigate('/dashboard/Movies');
+				}, 3000);
+			} else {
+				setTimeout(() => {
+					toast.error(`❌ ${message.ereMessage}`);
+					navigate('/dashboard/Movies');
+				}, 3000);
+			}
+			console.log(movieState);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-  const editMovie = async () => {
-    try {
-      let message = await editMovieApi(movieState);
-      console.log(movieState);
-      if (message.errCode === 0) {
-        setTimeout(() => {
-          toast.success(" Edit movie successful");
-          navigate("/dashboard/Movies");
-        }, 3000);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const editMovie = async () => {
+		try {
+			let message = await editMovieApi(movieState);
+			console.log(movieState);
+			if (message.errCode === 0) {
+				setTimeout(() => {
+					toast.success(' Edit movie success');
+					navigate('/dashboard/Movies');
+				}, 3000);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
   // * UseEffect
   useEffect(() => {
